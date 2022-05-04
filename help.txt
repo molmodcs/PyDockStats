@@ -1,0 +1,14 @@
+pc_roc.py is a script that generates Predictiveness curves and ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores and activities (0 or 1).The script is compatible with any number of programs. The input data (.csv) must be separated into columns for each docking program:
+
+Example:
+
+id_program1 scores_program1 activity_program1 id_program2 scores_program2 activity_program2
+
+
+The code runs at the command line:
+
+python pc.py <input data file> <number of programs> <program names separated by commas> <image name for output (ex: "out.png")>
+
+For example:
+
+> python pc.py input_data.csv 3 gold,vina,dockthor plt_out.png
