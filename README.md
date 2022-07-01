@@ -1,8 +1,6 @@
 # ROC-AUC-PC
 
-[![Test](https://github.com/delta-io/delta/actions/workflows/test.yaml/badge.svg)](https://github.com/delta-io/delta/actions/workflows/test.yaml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)(https://github.com/molmodcs/roc-auc-pc/LICENSE.txt)
-[![PyPI](https://img.shields.io/pypi/v/delta-spark.svg)](https://pypi.org/project/delta-spark/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/LICENSE)
 
 {NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a Predictiveness Curve(link).
 
