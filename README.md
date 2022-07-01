@@ -1,5 +1,9 @@
 # ROC-AUC-PC
 
+[![Test](https://github.com/delta-io/delta/actions/workflows/test.yaml/badge.svg)](https://github.com/delta-io/delta/actions/workflows/test.yaml)
+[![License](https://img.shields.io/badge/license-Apache%202-brightgreen.svg)](https://github.com/molmodcs/roc-auc-pc/LICENSE.txt)
+[![PyPI](https://img.shields.io/pypi/v/delta-spark.svg)](https://pypi.org/project/delta-spark/)
+
 {NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a Predictiveness Curve(link).
 
 ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
