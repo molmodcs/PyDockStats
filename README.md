@@ -1,6 +1,6 @@
 # ROC-AUC-PC
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
 {NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a Predictiveness Curve(link).
 
