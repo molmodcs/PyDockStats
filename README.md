@@ -13,12 +13,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+``
 matplotlib==3.5.2
 numpy==1.22.3
 pandas==1.4.2
 scikit_learn==1.1.0
 scipy==1.8.0
 statsmodels==0.13.2
+``
 
 ```
 Give examples
