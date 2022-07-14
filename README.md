@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
-{NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a Predictiveness Curve(link).
+{NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
 
 ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
 PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive(decoys) by plotting the Cumulative Distribution Function (CDF) of the data.
@@ -111,3 +111,7 @@ This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 This program is used for evaluating virtual screening programs, if you want to know more deeply how it works, check the paper which the program is based on {link}.
+
+   
+## References
+Empereur-mot, C., Guillemain, H., Latouche, A. et al. Predictiveness curves in virtual screening. J Cheminform 7, 52 (2015). https://doi.org/10.1186/s13321-015-0100-8
