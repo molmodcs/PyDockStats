@@ -11,7 +11,37 @@ PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Scre
 
 ```git clone https://github.com/molmodcs/roc-auc-pc.git```
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+The main file is the "pc_roc.py" which generates the Predictiveness curves and the ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and activities (0 or 1).The script is compatible with any number of programs, but be aware that if there are too many programs the plot will be confusing. The input data (.csv) must be separated into columns for each docking program:
+
+ COLUMN 0	COLUMN 1	COLUMN2		COLUMN 3	COLUMN 4	COLUMN 5
+id_program1 scores_program1 activity_program1 id_program2 scores_program2 activity_program2
+
+Example:
+
+|surf_id                                                                                    |surf_scores|surf_actives|icm_id   |icm_scores|icm_actives|vina_id  |vina_scores|vina_actives|
+|-------------------------------------------------------------------------------------------|-----------|------------|---------|----------|-----------|---------|-----------|------------|
+|decoy1565                                                                                  |16.76      |0           |decoy428 |-54.926393|0          |decoy564 |-13.9      |0           |
+|ligand83                                                                                   |16.56      |1           |decoy564 |-53.988434|0          |decoy2783|-13.8      |0           |
+|ligand82                                                                                   |16.56      |1           |ligand16 |-52.584761|1          |decoy298 |-13.7      |0           |
+|ligand13                                                                                   |16.42      |1           |decoy2783|-52.546666|0          |ligand18 |-13.4      |1           |
+|decoy564                                                                                   |16.35      |0           |ligand43 |-50.703975|1          |ligand16 |-13.3      |1           |
+|decoy309                                                                                   |16.07      |0           |decoy2539|-50.534748|0          |decoy429 |-13.2      |0           |
+|ligand70                                                                                   |15.82      |1           |ligand66 |-50.454789|1          |ligand19 |-13.1      |1           |
+|ligand81                                                                                   |15.7       |1           |ligand53 |-50.225887|1          |ligand82 |-13.1      |1           |
+|ligand8                                                                                    |15.55      |1           |ligand9  |-49.668177|1          |ligand21 |-13.1      |1           |
+|decoy541                                                                                   |15.5       |0           |ligand70 |-48.878551|1          |decoy526 |-13.1      |0           |
+
+
+
+
+The code runs at the command line:
+
+python pc.py <input data file> <number of programs> <program names separated by commas> <image name for output (ex: "out.png")>
+
+For example:
+
+> python pc.py input_data.csv 3 gold,vina,dockthor plt_out.png
+
 
 ### Prerequisites
 
@@ -24,29 +54,7 @@ scipy==1.8.0
 statsmodels==0.13.2
 ``
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
+## Running
 
 Explain how to run the automated tests for this system
 
