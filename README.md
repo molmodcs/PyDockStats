@@ -13,8 +13,9 @@ PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Scre
 
 The main file is the "pc_roc.py" which generates the Predictiveness curves and the ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and activities (0 or 1).The script is compatible with any number of programs, but be aware that if there are too many programs the plot will be confusing. The input data (.csv) must be separated into columns for each docking program:
 
- COLUMN 0	COLUMN 1	COLUMN2		COLUMN 3	COLUMN 4	COLUMN 5
-id_program1 scores_program1 activity_program1 id_program2 scores_program2 activity_program2
+|id_program1|scores_program1|activity_program1|id_program2|scores_program2|activity_program2|
+|-----------|---------------|-----------------|-----------|---------------|-----------------|
+|molecule1  |-12.3          |0                |molecule4  |3.6            |0                |
 
 Example:
 
@@ -31,6 +32,8 @@ Example:
 |ligand8                                                                                    |15.55      |1           |ligand9  |-49.668177|1          |ligand21 |-13.1      |1           |
 |decoy541                                                                                   |15.5       |0           |ligand70 |-48.878551|1          |decoy526 |-13.1      |0           |
 
+
+OBS: The molecules of the programs doesn't need to be align, because the algorithm sort them for each program and the alignment will be lost.
 
 
 
