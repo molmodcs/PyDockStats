@@ -72,8 +72,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Matheus Campos de Mattos** - (https://github.com/matheuscamposmtt)
+* **Luciano T. Costa** - (https://http://www.molmodcs.uff.br/)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/molmodcs/roc-auc-pc/blob/3936564b42f2626d41962c3b16ef074d166d8582/contributors) who participated in this project.
 
 ## License
 
