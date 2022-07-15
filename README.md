@@ -37,6 +37,22 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 
 
 
+
+
+
+### Prerequisites
+
+``
+[Matplotlib](https://matplotlib.org/) (3.5.2)
+NumPy (1.22.3)
+Pandas (1.4.2)
+Scikit-learn (1.1.0)
+SciPy (1.8.0)
+Statsmodels (0.13.2)
+``
+
+## Running
+
 The code runs at the command line:
 
 python pc.py <input data file> <number of programs> <program names separated by commas> <image name for output (ex: "out.png")>
@@ -44,39 +60,6 @@ python pc.py <input data file> <number of programs> <program names separated by 
 For example:
 
 > python pc.py input_data.csv 3 gold,vina,dockthor plt_out.png
-
-
-### Prerequisites
-
-``
-matplotlib==3.5.2
-numpy==1.22.3
-pandas==1.4.2
-scikit_learn==1.1.0
-scipy==1.8.0
-statsmodels==0.13.2
-``
-
-## Running
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 
 ## Contributing
 
