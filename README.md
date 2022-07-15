@@ -43,7 +43,7 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 ### Prerequisites
 
 ``
-[Matplotlib](https://matplotlib.org/) (3.5.2)
+[Matplotlib](https://matplotlib.org/) (3.5.2) \\
 NumPy (1.22.3)
 Pandas (1.4.2)
 Scikit-learn (1.1.0)
