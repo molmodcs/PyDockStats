@@ -4,8 +4,8 @@
 
 {NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
 
-ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
-PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive(decoys) by plotting the Cumulative Distribution Function (CDF) of the data.
+The script starts creating a logistic regression model from the data, with the predictions it creates the curves. ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
+PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive(decoys) by plotting the Cumulative Distribution Function (CDF).
 
 ## Getting Started
 
@@ -55,11 +55,18 @@ Statsmodels (0.13.2)
 
 The code runs at the command line:
 
-python pc.py <input data file> <number of programs> <program names separated by commas> <image name for output (ex: "out.png")>
+python pc_roc.py -f data_file
+
+There are optional arguments such as:
+
+-n or --names: names of the programs
+-o or --output: output image filename
+
+If not specified the script will use the default parameters.
 
 For example:
 
-> python pc.py input_data.csv 3 gold,vina,dockthor plt_out.png
+> python pc_roc.py -f input_data.csv -n gold,vina,dockthor -o out.png
 
 ## Contributing
 
