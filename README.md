@@ -37,13 +37,13 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 ### Prerequisites
 
 [matplotlib](https://matplotlib.org/) (3.5.2)<br/>
->`pip install matplotlib`<br/>
+`pip install matplotlib`<br/>
 [NumPy](https://numpy.org/) (1.22.3)<br/>
->`pip install numpy`<br/>
+`pip install numpy`<br/>
 [pandas](https://pandas.pydata.org/) (1.4.2)<br/>
->`pip install pandas`<br/>
+`pip install pandas`<br/>
 [scikit-learn](https://scikit-learn.org/stable/) (1.1.0)<br/>
->`pip install scikit-learn`<br/>
+`pip install scikit-learn`<br/>
 
 ## Running
 
