@@ -1,11 +1,11 @@
-# ROC-AUC-PC
+# PyDockStats
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
-{NAME} is a Python tool to build a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
+PyDockStats is a Python tool that builds a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
 
-The script starts creating a logistic regression model from the data, with the predictions it creates the curves. ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
-PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive(decoys) by plotting the Cumulative Distribution Function (CDF).
+The script starts creating a logistic regression model from the data, and with the predictions it creates the curves. ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
+PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive (decoys) by plotting a Cumulative Distribution Function (CDF).
 
 ## Getting Started
 
@@ -32,24 +32,14 @@ Example:
 |ligand8                                                                                    |15.55      |1           |ligand9  |-49.668177|1          |ligand21 |-13.1      |1           |
 |decoy541                                                                                   |15.5       |0           |ligand70 |-48.878551|1          |decoy526 |-13.1      |0           |
 
-
 OBS: The molecules of the programs doesn't need to be align, because the algorithm sort them for each program and the alignment will be lost.
-
-
-
-
-
 
 ### Prerequisites
 
-
-[Matplotlib](https://matplotlib.org/) (3.5.2) \\
-NumPy (1.22.3)
-Pandas (1.4.2)
-Scikit-learn (1.1.0)
-SciPy (1.8.0)
-Statsmodels (0.13.2)
-
+[matplotlib](https://matplotlib.org/) (3.5.2)<br/>
+[NumPy](https://numpy.org/) (1.22.3)<br/>
+[pandas](https://pandas.pydata.org/) (1.4.2)<br/>
+[scikit-learn](https://scikit-learn.org/stable/) (1.1.0)<br/>
 
 ## Running
 
