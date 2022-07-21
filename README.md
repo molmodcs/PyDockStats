@@ -37,14 +37,18 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 ### Prerequisites
 
 [matplotlib](https://matplotlib.org/) (3.5.2)<br/>
+>`pip install matplotlib`
 [NumPy](https://numpy.org/) (1.22.3)<br/>
+>`pip install numpy`
 [pandas](https://pandas.pydata.org/) (1.4.2)<br/>
+>`pip install pandas`
 [scikit-learn](https://scikit-learn.org/stable/) (1.1.0)<br/>
+>`pip install scikit-learn`
 
 ## Running
 
 The code runs at the command line:</br>
-`python pc_roc.py -f data_file`
+`python pydockstats.py -f data_file`
 
 There are optional arguments such as:
 
@@ -55,7 +59,7 @@ If not specified the script will use the default parameters.
 
 For example:
 
->`python pc_roc.py -f input_data.csv -n gold,vina,dockthor -o out.png`
+>`python pydockstats.py -f input_data.csv -p gold,vina,dockthor -o out.png`
 
 ## Contributing
 
