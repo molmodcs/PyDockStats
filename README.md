@@ -5,13 +5,13 @@
 PyDockStats is a Python tool that builds a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
 
 The script starts creating a logistic regression model from the data, and with the predictions it creates the curves. ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
-PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive (decoys) by plotting a Cumulative Distribution Function (CDF).
+PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive (decoys) by plotting a Cumulative Distribution Function (CDF). Therefore, the tool is useful to verify the performance of the programs used and gain more confidence when making inferences.
 
 ## Getting Started
 
 ```git clone https://github.com/molmodcs/roc-auc-pc.git```
 
-The main file is the "pc_roc.py" which generates the Predictiveness curves and the ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and activities (0 or 1).The script is compatible with any number of programs, but be aware that if there are too many programs the plot will be confusing. The input data (.csv) must be separated into columns for each docking program:
+The main file is the "pydstats.py" which generates the Predictiveness curves and the ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and activities (0 or 1).The script is compatible with any number of programs, but be aware that if there are too many programs the plot will be confusing. The input data (.csv) must be separated into columns for each docking program:
 
 |id_program1|scores_program1|activity_program1|id_program2|scores_program2|activity_program2|
 |-----------|---------------|-----------------|-----------|---------------|-----------------|
@@ -43,9 +43,8 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 
 ## Running
 
-The code runs at the command line:
-
-python pc_roc.py -f data_file
+The code runs at the command line:</br>
+`python pc_roc.py -f data_file`
 
 There are optional arguments such as:
 
@@ -56,7 +55,7 @@ If not specified the script will use the default parameters.
 
 For example:
 
-> python pc_roc.py -f input_data.csv -n gold,vina,dockthor -o out.png
+>`python pc_roc.py -f input_data.csv -n gold,vina,dockthor -o out.png`
 
 ## Contributing
 
@@ -91,7 +90,7 @@ This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-This program is used for evaluating virtual screening programs, if you want to know more deeply how it works, check the paper which the program is based on {link}.
+This program is used for evaluating virtual screening programs, if you want to know more deeply how it works, check the [paper](https://doi.org/10.1186/s13321-015-0100-8) which the program is based on}.
 
    
 ## References
