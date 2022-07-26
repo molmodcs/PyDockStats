@@ -78,7 +78,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Matheus Campos de Mattos** - (https://github.com/matheuscamposmtt)
-* **Luciano T. Costa** - (https://http://www.molmodcs.uff.br/) or (https://github.com/molmodcs)
+* **Luciano T. Costa** - (http://www.molmodcs.uff.br/) or (https://github.com/molmodcs)
 
 See also the list of [contributors](https://github.com/molmodcs/roc-auc-pc/blob/3936564b42f2626d41962c3b16ef074d166d8582/contributors) who participated in this project.
 
@@ -86,21 +86,21 @@ See also the list of [contributors](https://github.com/molmodcs/roc-auc-pc/blob/
 
 This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md) file for details
 
-* xtb version 6.5.0 (746241f) compiled by 'ehlert@majestix' on 2022-05-15
+* PyDockStats version 1.0 (746241f) compiled by 'matheuscamposmattos@id.uff.br' on 2022-07-25
 
-   xtb is free software: you can redistribute it and/or modify it under
+   PyDockStats is free software: you can redistribute it and/or modify it under
    the terms of the GNU Lesser General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
 
-   xtb is distributed in the hope that it will be useful,
+   PyDockStats is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU Lesser General Public License for more details.
 
 ## Acknowledgments
 
-This program is used for evaluating virtual screening programs, if you want to know more deeply how it works, check the [paper](https://doi.org/10.1186/s13321-015-0100-8) which the program is based on}.
+This program is used for evaluating and classifying the results from virtual screening. If you want to know more deeply how it works, check the [paper](https://doi.org/10.1186/s13321-015-0100-8) which the program is based on}.
 
    
 ## References
