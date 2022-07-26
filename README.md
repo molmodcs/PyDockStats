@@ -1,17 +1,19 @@
-# PyDockStats
+# About PyDockStats
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
-PyDockStats is a Python tool that builds a ROC (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
+PyDockStats is an easy and versatil Python tool that builds a [`ROC`](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
 
-The script starts creating a logistic regression model from the data, and with the predictions it creates the curves. ROC is a curve that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
-PC (Predictiveness Curve) is a curve that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positive (decoys) by plotting a Cumulative Distribution Function (CDF). Therefore, the tool is useful when verifying Virtual Screening programs' performance and gaining more confidence when making inferences.
+The script starts creating a logistic regression model from the data, and with the predictions it creates the graphical plots. ROC curve is a graphical plot that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
+PC (Predictiveness Curve) curve is a graphical plot that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positives (decoys) by plotting a [Cumulative Distribution Function (CDF)](https://en.wikipedia.org/wiki/Cumulative_distribution_function). Therefore, the tool is useful when verifying Virtual Screening programs' performance and gaining more confidence when making inferences.
 
 ## Getting Started
 
-```git clone https://github.com/molmodcs/roc-auc-pc.git```
+The development version can be installed directly from github via `git`:
 
-The main file is the "pydstats.py" which generates the Predictiveness curves and the ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and activities (0 or 1).The script is compatible with any number of programs, but be aware that if there are too many programs the plot will be confusing. The input data (.csv) must be separated into columns for each docking program:
+```git clone https://github.com/molmodcs/PyDockStats.git```
+
+The source is the "pydockstats.py" which generates the Predictiveness curves and ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and their activities (0 or 1). The script is compatible with any number of programs. The input data (.csv) must be separated into columns for each docking program:
 
 |id_program1|scores_program1|activity_program1|id_program2|scores_program2|activity_program2|
 |-----------|---------------|-----------------|-----------|---------------|-----------------|
@@ -48,9 +50,10 @@ OBS: The molecules of the programs doesn't need to be align, because the algorit
 [scikit-learn](https://scikit-learn.org/stable/) (1.1.0)<br/>
 `pip install scikit-learn`<br/>
 
-## Running
+## Usage
 
 The code runs at the command line:</br>
+
 `python pydockstats.py -f data_file`
 
 There are optional arguments such as:
@@ -75,7 +78,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Matheus Campos de Mattos** - (https://github.com/matheuscamposmtt)
-* **Luciano T. Costa** - (https://http://www.molmodcs.uff.br/)
+* **Luciano T. Costa** - (https://http://www.molmodcs.uff.br/) or (https://github.com/molmodcs)
 
 See also the list of [contributors](https://github.com/molmodcs/roc-auc-pc/blob/3936564b42f2626d41962c3b16ef074d166d8582/contributors) who participated in this project.
 
