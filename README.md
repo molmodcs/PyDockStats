@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
-PyDockStats is an easy and versatil Python tool that builds a [`ROC`](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) (Receiver operating characteristic) curve and a [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8).
+PyDockStats is an easy and versatil Python tool that builds [`ROC`](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) (Receiver operating characteristic) and [Predictiveness Curve](https://jcheminf.biomedcentral.com/articles/10.1186/s13321-015-0100-8) curves.
 
 The script starts creating a logistic regression model from the data, and with the predictions it creates the graphical plots. ROC curve is a graphical plot that describes the performance of a binary classifier by plotting the relationship between the true positive rate and the false positive rate.
 PC (Predictiveness Curve) curve is a graphical plot that measures the ability of a Virtual Screening program to separate the data in true positives (true active) and false positives (decoys) by plotting a [Cumulative Distribution Function (CDF)](https://en.wikipedia.org/wiki/Cumulative_distribution_function). Therefore, the tool is useful when verifying Virtual Screening programs' performance and gaining more confidence when making inferences.
