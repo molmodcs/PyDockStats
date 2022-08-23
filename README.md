@@ -13,7 +13,7 @@ The development version can be installed directly from github via `git`:
 
 ```git clone https://github.com/molmodcs/PyDockStats.git```
 
-The source is the "pydockstats.py" which generates the Predictiveness curves and ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and their activities (0 or 1). The script is compatible with any number of programs. The input data (.csv) must be separated into columns for each docking program:
+The source is the "pydockstats.py" which generates the Predictiveness curves and ROC curves given a dataset of decoys and ligands with their respectives IDs or names, docking scores (decimals separated by dot (.) ) and their activities (0 or 1). The script is compatible with any number of programs. The input data (.csv, .xlsx, .ods) must be separated into columns for each docking program:
 
 |id_program1|scores_program1|activity_program1|id_program2|scores_program2|activity_program2|
 |-----------|---------------|-----------------|-----------|---------------|-----------------|
@@ -100,7 +100,7 @@ This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-This program is used for evaluating and classifying the results from virtual screening. If you want to know more deeply how it works, check the [paper](https://doi.org/10.1186/s13321-015-0100-8) which the program is based on}.
+This program is used for evaluating and classifying the results from virtual screening. If you want to know more deeply how it works, check the [paper](https://doi.org/10.1186/s13321-015-0100-8) which the program is based on.
 
    
 ## References
