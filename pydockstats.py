@@ -1,11 +1,8 @@
-#/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Created on Sun Mar  6 14:33:08 2022
+Created on 06/03/2022
 
-@authors: Matheus Campos de Mattos (matheuscamposmattos@id.uff.br)
-Prof. Luciano T. Costa (ltcosta@id.uff.br)
-MolMod-CS research group (www.molmodcs.uff.br)
+@authors: Matheus C. Mattos, Luciano T. Costa
 
 This project is licensed under the GNU License - see the LICENSE.md file for details
 
@@ -14,115 +11,144 @@ PyDockStats version 1.0 (746241f) compiled by 'matheuscamposmattos@id.uff.br' on
 PyDockStats is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
 PyDockStats is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-
 """
-
-import pandas as pd
-import numpy as np
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-import matplotlib.pyplot as plt
-from sklearn.metrics import auc, roc_curve
 import sys, os
 import argparse
+from typing import List, Dict, Tuple
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from sklearn.metrics import auc, roc_curve
 from sklearn.linear_model import LogisticRegression
 
-NAME = "PyDockStats"
 
-glm_names = ['glm','GLM', 'binomial family', 'glms', 'generalized linear models']
+
+NAME = "PyDockStats"
+FORMULA = 'activity ~ scores'
+plt.style.use('fast')
+formats = {"csv": pd.read_csv, "excel": pd.read_excel}
 
 def parseArguments():
     parser = argparse.ArgumentParser(prog=f"{NAME}",
-                                     description=f"""{NAME} is a Python tool that builds ROC (Receiver operating characteristic) and Predictiveness Curves from Virtual Screening data using different Docking programs.""")
+                                     description=f"""{NAME} is a Python tool that builds a ROC (Receiver operating characteristic) curve a
+        and a Predictiveness Curve for Virtual Screening programs.""")
     
     
-    parser.add_argument("-f", "--file", dest="file", type=str, help="CSV or TXT input file with the Docking scores and activities")
-    parser.add_argument("-p", "--progs", dest="progs", type=str, default="", help="Docking programs used separated by comma; example: -p vina,gold,dockthor. Look at that this order must be the same in your CSV file")
-    parser.add_argument("-o", "--output", dest="output", type=str, default="output.png", help="ROC and PC Output files in PNG format ")
-    parser.add_argument("-m", "--model", dest="model", type=str, default='logistic_regression', help="Model type (logistic regression or GLM)")
+    parser.add_argument("-f", "--file", dest="file", type=str, help="Data file")
+    parser.add_argument("-n", "--names", dest="names", type=str, default="", help="Names separated by comma")
+    parser.add_argument("-o", "--output", dest="output", type=str, default="out.png", help="Output image name")
+    parser.add_argument("-m", "--model", dest="model", type=str, default='logistic_regression', help="Model type (logistic regression only)")
 
     args = parser.parse_args()
     if (not args.file):
-        print("Sorry but I need a CSV or TXT input file (usage: pydockstats.py -f 'filename.csv')")
+        print("Sorry but I need a data file (pc_roc.py -f 'filename.csv')")
         sys.exit(0)
 
     return args
 
 
-FORMULA = 'activity ~ scores'
-plt.style.use('fast')
+            
+# NOT USED YET
+def de_mean(data: np.array) -> np.array:
+    return data - np.mean(data)
+    
+def direction(w: np.array) -> np.array:
+    return w / np.linalg.norm(w)
+
+def directional_variance(data: np.array, w: np.array) -> float:
+    w_dir = direction(w)
+    print(w_dir)
+    return (np.dot(data, w_dir)**2).sum()
+
+def directional_variance_gradient(data: np.array, w: np.array) -> np.array:
+    w_dir = direction(w)
+    return np.array([ (np.dot(v, w_dir) * v[i] for v in data).sum() 
+                     for i in range(len(w))])
+
+def scale(x: np.array) -> np.array:
+    _max = x.max()
+    new = x / _max
+
+    return new
+
+def num_derivative(x: np.array, y: np.array) -> np.array:
+    
+    yprime = np.diff(y) / np.diff(x)
+    xprime = []
+    
+    for i in range(len(yprime)):
+        xtemp = (x[i+1]+x[i])/2
+        xprime = np.append(xprime, xtemp)
+    
+    return xprime,  yprime
 
 
+# aux functions
 def find_nearest(array, value):
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return array[idx]
 
+def read(file: str):
+    if file.endswith(('.xlsx', '.ods')):
+        return formats['excel'](file)
+    else:
+        return formats['csv'](file, sep=',')
 
-class PyDockStats:
-    def __init__(self, arguments):
-
-        self.filename = arguments['file']
-        self.names = arguments['progs']
-        self.nprograms = len(self.names.split(','))
-        self.ofname = arguments['output']
-        self.model_type = arguments['model']
-
-        self.fpr = []
-        self.tpr = []
-        self.fig, self.ax = None, None
-        self.fig_roc, self.ax_roc = None, None
-        self.properties = {}
-        self.model = LogisticRegression("none")
-
-    def main(self):
-        f, ext = os.path.splitext(self.ofname)
-
-        # prepare dataframe
-        df, scores, actives = self.prepare_df()
-        # setup pc for matplotlib
-        self.setup_pc()
-        # setup roc for matplotlib
-        self.setup_roc()
-
-        # calculate the PC and the ROC
-        self.calculate_plot(df, scores, actives, self.names)
-
-        return 0
-
-    # setup the PC
-    def setup_pc(self):
-        # dataset PC
-
-        self.fig, self.ax = plt.subplots()
-        self.fig.set_size_inches(8, 5)
-        plt.tight_layout(pad=2.6)
-
-        self.ax.set_title('Predictiveness Curve')
-        self.ax.set_ylabel('Activity probability')
-        self.ax.set_xlabel('Quantile')
-
+        
+# inheriting from matplotlib Figure
+class Curve(Figure):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ax = self.add_axes([0.08, 0.1, 0.86, 0.84])
         self.ax.xaxis.set_ticks(np.arange(0, 1.1, 0.1))
         self.ax.yaxis.set_ticks(np.arange(0, 1.1, 0.1))
         self.ax.margins(x=0, y=0)
 
-    # setup the ROC curve
-    def setup_roc(self):
-        self.fig_roc, self.ax_roc = plt.subplots()
-        self.fig_roc.set_size_inches(7, 5)
-        plt.tight_layout(pad=2.6)
+    def plot(self, x, y, **kwargs):
+        return self.ax.plot(x, y, **kwargs)
 
-        self.ax_roc.set_title('ROC curve')
-        self.ax_roc.set_ylabel('Sensitivity')
-        self.ax_roc.set_xlabel('1 - specificity')
+    def get_color(self, idx: int) -> str:
+        lines = self.ax.get_lines()
+        return lines[idx].get_c()
 
-        x_linear = np.linspace(0, 1)
-        y_linear = np.linspace(0, 1)
+class PC(Curve):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.name = 'Predictiveness Curve'
+        self.ax.set_title(self.name)
+        self.ax.set_ylabel('Activity probability')
+        self.ax.set_xlabel('Quantile')
+    
+class ROC(Curve):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.name = 'Receiver Operating Characteristic'
+        self.ax.set_title('ROC curve')
+        self.ax.set_ylabel('Sensitivity')
+        self.ax.set_xlabel('1 - specificity')
+        self.ax.plot(np.linspace(0, 1), np.linspace(0, 1), linestyle='dashed', label='Random', color='red')
 
-        self.ax_roc.plot(x_linear, y_linear, linestyle='dashed', label='Random', color='red')
-        self.ax_roc.margins(x=0, y=0)
 
-    def get_names(self, number):
+
+class PyDockStats:
+    def __init__(self, names: List, model: str, ofname: str):
+        self.names=names
+        self.ofname = ofname
+        self.model_type = model
+        self.nprograms = 0
+        self.curves = {"pc": plt.figure(FigureClass=PC, figsize=(12,7), num='Predictiveness Curve'), 
+                       "roc": plt.figure(FigureClass=ROC, figsize=(10,7), num='Receiver Operating Characteristic')}
+        self.properties = {}
+        self.model = LogisticRegression(solver='lbfgs', penalty='l2')
+        self.df = None
+    
+    def save_plots(self):
+        for name, curve in self.curves.items():
+            curve.savefig(f"{name}_{self.ofname}", dpi=300)
+
+    def get_names(self, number: int):
         names = []
 
         for i in range(number):
@@ -130,20 +156,18 @@ class PyDockStats:
 
         return names
 
-    def prepare_df(self):
-
-        df = pd.read_csv(self.filename, sep=',')
+    def preprocess(self, filename: str):
+        df = read(filename)
         df = df.sample(frac=1).reset_index(drop=True)
         cols = df.columns
 
         if not self.names:
             self.names = self.get_names(int(len(cols) / 3))
-            self.nprograms = len(self.names)
 
         else:
             self.names = self.names.split(',')
 
-        self.nprograms
+        self.nprograms = len(self.names)
 
         scores = []
         actives = []
@@ -151,119 +175,138 @@ class PyDockStats:
             scores.append(df[cols[3 * n + 1]].to_numpy())
             actives.append(df[cols[3 * n + 2]].to_numpy())
 
-        df = pd.DataFrame()
-        return df, np.array(scores), np.array(actives)
-
-    def plot_roc(self, fpr, tpr, name):
-        AUC = auc(fpr, tpr)
-        self.ax_roc.plot(fpr, tpr, label=f"{name} | AUC = {AUC:.2f}", linewidth=2)
-
-    def init_model(self):
-        if self.model_type in glm_names:
-            import statsmodels.api as sm
-            import statsmodels.formula.api as smf
+        return np.array(scores), np.array(actives)
 
 
+    
+    def generateX(self, predictions):
+        x = []
+        # create the percentile axis (x)
+        for idx, y_hat in enumerate(predictions):
+            pct = (idx + 1) / len(predictions)
 
-    def calculate_plot(self, df, scores, actives, names):
+            x.append(pct)
 
+        return np.array(x)
+    
+    def optimal_threshold(self, fpr, tpr, thresholds):
+        # selecting the optimal threshold based on ROC
+        selected_t = thresholds[np.argmin(np.abs(fpr + tpr - 1))]
+        
+        return selected_t
+    
+    def calculate_hits(self, y_true_sorted, idx_selected_t, activity):
+        
+        activity_topx = np.array(y_true_sorted[idx_selected_t:])
+        
+        hits_x = np.squeeze(np.where(activity_topx == 1)).size
+        hits_t = np.squeeze(np.where(np.array(activity) == 1)).size
+        
+        return hits_x, hits_t
+    
+    # Enrichment Factor
+    def calculate_EF(self, hits_x, hits_t, topx_percent):
+        return (hits_x) / (hits_t * topx_percent)
+    
+    # Total Gain
+    def calculate_TG(self, y_hat, p):
+        return sum(abs(y_hat - p) / len(y_hat)) / (2 * p * (1 - p))
+    
+    # Partial total gain from the selected threshold
+    def calculate_pTG(self, y_hat, idx_selected_t, p):
+        return sum(abs(y_hat[idx_selected_t:] - p) / len(y_hat[idx_selected_t:])) / (2 * p * (1 - p))
+    
+    
+    def fit_predict(self, x, y):
+        x = x.reshape(-1, 1)
+        clf = self.model.fit(x, y)
+        predictions = clf.predict_proba(x)[:, 1]
+        
+        return predictions
+
+    def generate_plots(self, scores, actives):
+        names = self.names
+        pc = self.curves['pc']
+        roc = self.curves['roc']
         # iterate through the data for each name
         for i in range(0, self.nprograms):
-            name = names[i];
-            df['scores'] = scores[i]
-            df['activity'] = actives[i]
+            name = names[i]
 
-            X = scores[i]
+            x = scores[i]
             activity = actives[i]
 
             # calculate prevalence
-            p = round(df.activity.mean(), 6)  # hitrate
-
-            X = X.reshape(-1, 1)
-
-            clf = LogisticRegression("none").fit(X, activity)
-            predictions = clf.predict_proba(X)[:, 1]
-
-            if self.model_type in glm_names:
-                print("GLMs!")
-                # define the model
-                model = smf.glm(formula=FORMULA, data=df, family=sm.families.Binomial())
-
-                # fit the model
-                predictions = model.fit().predict()
-
+            p = round(activity.mean(), 6)  # hitrate
+            
+            predictions = self.fit_predict(x, activity)
+            self.df = (x, predictions)
+            
+            #sorting
             y_true_sorted = [x for _, x in sorted(zip(predictions, activity))]
-            predictions = sorted(predictions)
-
-            X = [0]
-            Y = np.array([0])
-
-            Y = np.concatenate((Y, predictions))
-
-            # create the percentile axis (X)
-            for idx, y in enumerate(predictions):
-                pct = (idx + 1) / len(predictions)
-
-                X.append(pct)
-
-            X = np.array(X)
-
-            # calculates the roc curve
-            self.fpr, self.tpr, thresholds = roc_curve(y_true_sorted, predictions, pos_label=1)
-
-            # selecting the optimal threshold based on ROC
-            selected_t = thresholds[np.argmin(np.abs(self.fpr + self.tpr - 1))]
-
-            # translate the selected threshold to the X axis
-            interp = np.interp(selected_t, Y, X)
-
-            # calculate all metrics
-            topx_percent = 1 - interp
-            idx_selected_t = np.where(Y == selected_t)[0][0]
-
-            activity_topx = np.array(y_true_sorted[idx_selected_t:])
-
-            hits_x = np.squeeze(np.where(activity_topx == 1)).size
-            hits_t = np.squeeze(np.where(np.array(activity) == 1)).size
-
-            # Nx = np.squeeze(np.where(Y > selected_t)).size
-            # Nt = len(activity)
-
-            # Enrichment Factor
-            EF = (hits_x) / (hits_t * topx_percent)
-            # Total Gain
-            TG = sum(abs(Y - p) / len(Y)) / (2 * p * (1 - p))
-            # Partial total gain from the selected threshold
-            pTG = sum(abs(Y[idx_selected_t:] - p) / len(Y[idx_selected_t:])) / (2 * p * (1 - p))
+            predictions = np.array(sorted(predictions))
+            
+            #details
+            x =  np.concatenate(([0], self.generateX(predictions)))
+            y_hat = np.concatenate(([0], predictions))
+            
+            # generating the roc curve
+            fpr, tpr, thresholds = roc_curve([0]+y_true_sorted, y_hat, pos_label=1)
+            
+            #calculating derivatives
+            
+            x_prime, y_hat_prime = num_derivative(x, y_hat)
+            x_prime, y_hat_prime = scale(x_prime), scale(y_hat_prime)
+            
+            # selecting which derivative is bigger than 0.4
+            idx = np.squeeze(np.where(y_hat_prime > 0.4))[0]
+            selected_t = y_hat_prime[idx]
+            selected_x = x_prime[idx]
+            
+            # calculating the hits
+            hits_x, hits_t = self.calculate_hits(y_true_sorted, idx, activity)
 
             # adding the metrics to the properties dict
-            self.properties['EF'] = EF
-            self.properties['TG'] = TG
-            self.properties['pTG'] = pTG
-
-            print(f"[*] {name}")
-            print(f"Top {(topx_percent) * 100:.2f}% of the dataset:")
-            print(f"-> EF: {EF:.3f}")
-            print(f"-> pTG: {pTG:.3f}\n")
-
-            # self.ax.axhline(y=selected_t, color=COLORS[i], linestyle='dashed')
+            self.properties['EF'] = self.calculate_EF(hits_x, hits_t, 1 - selected_x)
+            self.properties['TG'] = self.calculate_TG(y_hat, p)
+            self.properties['pTG'] = self.calculate_pTG(y_hat, idx, p)
             
-            plot = self.ax.plot(X, Y, label=names[i] + f" | {interp:.2f}")
-            self.ax.axvline(x=interp, linestyle='dashed', color = plot[0].get_color())
-            self.plot_roc(self.fpr, self.tpr, names[i])
+            # printing
+            print(f"[*] {name}")
+            print(f"Top {(1 - selected_x) * 100:.2f}% of the dataset:")
+            print(f"-> EF: {self.properties['EF']:.3f}")
+            print(f"-> pTG: {self.properties['pTG']:.3f}\n")
+            
+            # plotting
 
-            self.ax.legend()
-            self.ax_roc.legend()
+            plot = pc.plot(x, y_hat, label=names[i] + f" | {selected_x:.2f}")
+            pc.ax.axvline(x=selected_x, linestyle='dashed', color=plot[0].get_c())
+            
+            AUC = auc(fpr, tpr)
+            roc.plot(fpr, tpr, label=f"{name} | AUC = {AUC:.2f}", linewidth=2)
+
+            pc.ax.legend()
+            roc.ax.legend()
+        
+        pc.ax.axhline(y=p, color='grey', linestyle='dashed', alpha=0.5)
+        self.save_plots()
+
         plt.show()
 
-        # self.ax.axhline(y=hitrate, color='grey', linestyle='dashed', alpha=0.5)
-
-        # saving the curves
-        self.fig.savefig("pc_" + self.ofname, dpi=300)
-        self.fig_roc.savefig("roc_" + self.ofname, dpi=300)
 
 
 if __name__ == "__main__":
-    args = parseArguments()
-    PyDockStats = PyDockStats(vars(args))
-    sys.exit(PyDockStats.main())
+    args = vars(parseArguments())
+    
+    filename = args['file']
+    names = args['names']
+    nprograms = len(names.split(','))
+    ofname = args['output']
+    model_type = args['model']
+
+    pydock = PyDockStats(names, model_type, ofname)
+
+    # preprocess the data
+    scores, actives = pydock.preprocess(filename)
+
+    # calculate the PC and the ROC
+    pydock.generate_plots(scores, actives)
