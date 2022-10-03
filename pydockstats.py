@@ -12,7 +12,6 @@ PyDockStats is free software: you can redistribute it and/or modify it under the
 
 PyDockStats is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 """
-import sys, os
 import argparse
 from typing import List, Dict, Tuple
 import pandas as pd
@@ -32,8 +31,7 @@ formats = {"csv": pd.read_csv, "excel": pd.read_excel}
 def parseArguments():
     parser = argparse.ArgumentParser(prog=f"{NAME}",
                                      description=f"""{NAME} is a Python tool that builds a ROC (Receiver operating characteristic) curve a
-        and a Predictiveness Curve for Virtual Screening programs.""")
-    
+        and a Predictiveness Curve for Virtual Screening programs.""")  
     
     parser.add_argument("-f", "--file", dest="file", type=str, help="Data file")
     parser.add_argument("-n", "--names", dest="names", type=str, default="", help="Names separated by comma")
@@ -43,28 +41,9 @@ def parseArguments():
     args = parser.parse_args()
     if (not args.file):
         print("Sorry but I need a data file (pc_roc.py -f 'filename.csv')")
-        sys.exit(0)
+        exit(0)
 
     return args
-
-
-            
-# NOT USED YET
-def de_mean(data: np.array) -> np.array:
-    return data - np.mean(data)
-    
-def direction(w: np.array) -> np.array:
-    return w / np.linalg.norm(w)
-
-def directional_variance(data: np.array, w: np.array) -> float:
-    w_dir = direction(w)
-    print(w_dir)
-    return (np.dot(data, w_dir)**2).sum()
-
-def directional_variance_gradient(data: np.array, w: np.array) -> np.array:
-    w_dir = direction(w)
-    return np.array([ (np.dot(v, w_dir) * v[i] for v in data).sum() 
-                     for i in range(len(w))])
 
 def scale(x: np.array) -> np.array:
     _max = x.max()
@@ -258,7 +237,9 @@ class PyDockStats:
             x_prime, y_hat_prime = scale(x_prime), scale(y_hat_prime)
             
             # selecting which derivative is bigger than 0.4
-            idx = np.squeeze(np.where(y_hat_prime > 0.4))[0]
+            idx = np.where(y_hat_prime > 0.35)[0]
+            idx = idx[0] if idx[0] != 0 else idx[1]
+            
             selected_t = y_hat_prime[idx]
             selected_x = x_prime[idx]
             
@@ -286,7 +267,6 @@ class PyDockStats:
 
             pc.ax.legend()
             roc.ax.legend()
-        
         pc.ax.axhline(y=p, color='grey', linestyle='dashed', alpha=0.5)
         self.save_plots()
 
@@ -294,7 +274,11 @@ class PyDockStats:
 
 
 
+
+import cProfile
+
 if __name__ == "__main__":
+
     args = vars(parseArguments())
     
     filename = args['file']
@@ -307,6 +291,8 @@ if __name__ == "__main__":
 
     # preprocess the data
     scores, actives = pydock.preprocess(filename)
-
+    
     # calculate the PC and the ROC
     pydock.generate_plots(scores, actives)
+
+  
