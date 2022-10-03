@@ -77,7 +77,6 @@ def scale(x: np.array) -> np.array:
 
 
 def num_derivative(x: np.array, y: np.array) -> np.array:
-
     yprime = np.diff(y) / np.diff(x)
     xprime = []
 
