@@ -58,7 +58,7 @@ The code runs at the command line:</br>
 
 There are optional arguments such as:
 
--n or --names: names of the programs
+-p or --programs: names of the programs
 -o or --output: output image filename
 
 If not specified the script will use the default parameters.
