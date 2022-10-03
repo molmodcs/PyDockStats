@@ -34,7 +34,7 @@ def parseArguments():
         and a Predictiveness Curve for Virtual Screening programs.""")  
     
     parser.add_argument("-f", "--file", dest="file", type=str, help="Data file")
-    parser.add_argument("-n", "--names", dest="names", type=str, default="", help="Names separated by comma")
+    parser.add_argument("-p", "--programs", dest="names", type=str, default="", help="Programs names separated by comma")
     parser.add_argument("-o", "--output", dest="output", type=str, default="out.png", help="Output image name")
     parser.add_argument("-m", "--model", dest="model", type=str, default='logistic_regression', help="Model type (logistic regression only)")
 
