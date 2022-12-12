@@ -98,7 +98,7 @@ def read(file: str):
     if file.endswith((".xlsx", ".ods")):
         return formats["excel"](file)
     else:
-        return formats["csv"](file, sep=",")
+        return formats["csv"](file, sep=None, engine='python')
 
 
 # inheriting from matplotlib Figure
@@ -178,6 +178,8 @@ class PyDockStats:
     def preprocess(self, filename: str):
         df = read(filename)
         df = df.sample(frac=1).reset_index(drop=True)
+        df = df.dropna(axis=1, how='all')
+
         cols = df.columns
 
         if not self.names:
@@ -191,8 +193,15 @@ class PyDockStats:
         scores = []
         actives = []
         for n in range(self.nprograms):
-            scores.append(df[cols[3 * n + 1]].to_numpy())
-            actives.append(df[cols[3 * n + 2]].to_numpy())
+            idx = 3 * n + 1
+            score_actives = df[[cols[idx], cols[idx+1]]]
+            score_actives = score_actives.dropna(axis=0, how='all')
+
+            coluna_score = score_actives.iloc[:, 0]
+            coluna_actives = score_actives.iloc[:, 1]
+
+            scores.append(coluna_score.to_numpy())
+            actives.append(coluna_actives.to_numpy())
 
         return np.array(scores), np.array(actives)
 
@@ -235,7 +244,7 @@ class PyDockStats:
             2 * p * (1 - p)
         )
 
-    def fit_predict(self, x, y):
+    def fit_predict(self, x, y):        
         x = x.reshape(-1, 1)
         clf = self.model.fit(x, y)
         predictions = clf.predict_proba(x)[:, 1]
@@ -252,7 +261,6 @@ class PyDockStats:
 
             x = scores[i]
             activity = actives[i]
-
             predictions = self.fit_predict(x, activity)
             self.df = (x, predictions)
 
@@ -284,14 +292,14 @@ class PyDockStats:
 
             # adding the metrics to the properties dict
             self.properties["EF"] = self.calculate_EF(hits_x, hits_t, 1 - selected_x)
-            self.properties["TG"] = self.calculate_TG(y_hat, p)
-            self.properties["pTG"] = self.calculate_pTG(y_hat, idx, p)
+            #self.properties["TG"] = self.calculate_TG(y_hat, p)
+            #self.properties["pTG"] = self.calculate_pTG(y_hat, idx, p)
 
             # printing
             print(f"[*] {name}")
             print(f"Top {(1 - selected_x) * 100:.2f}% of the dataset:")
             print(f"-> EF: {self.properties['EF']:.3f}")
-            print(f"-> pTG: {self.properties['pTG']:.3f}\n")
+            #print(f"-> pTG: {self.properties['pTG']:.3f}\n")
 
             # plotting
 
