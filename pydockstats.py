@@ -253,9 +253,6 @@ class PyDockStats:
             x = scores[i]
             activity = actives[i]
 
-            # calculate prevalence
-            p = round(activity.mean(), 6)  # hitrate
-
             predictions = self.fit_predict(x, activity)
             self.df = (x, predictions)
 
@@ -306,7 +303,6 @@ class PyDockStats:
 
             pc.ax.legend()
             roc.ax.legend()
-        pc.ax.axhline(y=p, color="grey", linestyle="dashed", alpha=0.5)
         self.save_plots()
 
         plt.show()
