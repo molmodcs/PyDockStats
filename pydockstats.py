@@ -281,8 +281,13 @@ class PyDockStats:
             x_prime, y_hat_prime = scale(x_prime), scale(y_hat_prime)
 
             # selecting which derivative is bigger than 0.4
-            idx = np.where(y_hat_prime > 0.35)[0]
-            idx = idx[0] if idx[0] != 0 else idx[1]
+            idx = np.where(y_hat_prime > 0.34)[0]
+            if idx[0] != 0:
+                idx = idx[0]
+            elif len(idx) > 1:
+                idx = idx[1]
+            else:
+                idx = idx[0]
 
             selected_t = y_hat_prime[idx]
             selected_x = x_prime[idx]
