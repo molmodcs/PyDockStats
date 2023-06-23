@@ -122,6 +122,67 @@ def generate_plots(names, scores, actives):
 
     plt.show()
 
+def generate_data(names, scores, actives):
+    pc = dict(x=[], y=[])
+    roc = dict(x=[], y=[])
+    # iterate through the data for each name
+    for i in range(0, len(names)):
+        name = names[i]
+
+        x = scores[i]
+        activity = actives[i]
+        predictions = fit_predict(x, activity)
+        df = (x, predictions)
+
+        # sorting
+        y_true_sorted = [x for _, x in sorted(zip(predictions, activity))]
+        predictions = np.array(sorted(predictions))
+
+        # details
+        x = np.concatenate(([0], generateX(predictions)))
+        y_hat = np.concatenate(([0], predictions))
+
+        # generating the roc curve
+        fpr, tpr, thresholds = roc_curve([0] + y_true_sorted, y_hat, pos_label=1)
+
+        # calculating derivatives
+
+        x_prime, y_hat_prime = num_derivative(x, y_hat)
+        x_prime, y_hat_prime = scale(x_prime), scale(y_hat_prime)
+
+        # selecting which derivative is bigger than 0.4
+        idx = np.where(y_hat_prime > 0.34)[0]
+        if idx[0] != 0:
+            idx = idx[0]
+        elif len(idx) > 1:
+            idx = idx[1]
+        else:
+            idx = idx[0]
+
+        selected_t = y_hat_prime[idx]
+        selected_x = x_prime[idx]
+
+        # calculating the hits
+        hits_x, hits_t = calculate_hits(y_true_sorted, idx, activity)
+
+        # adding the metrics to the properties dict
+        enrichment_factor = calculate_EF(hits_x, hits_t, 1 - selected_x)
+        #self.properties["TG"] = self.calculate_TG(y_hat, p)
+        #self.properties["pTG"] = self.calculate_pTG(y_hat, idx, p)
+
+        # printing
+        print(f"[*] {name}")
+        print(f"Top {(1 - selected_x) * 100:.2f}% of the dataset:")
+        print(f"-> EF: {enrichment_factor:.3f}")
+        #print(f"-> pTG: {self.properties['pTG']:.3f}\n")
+
+        pc["x"].append(x)
+        pc["y"].append(y_hat)
+
+        roc["x"].append(fpr)
+        roc["y"].append(tpr)
+
+    return (pc, roc)
 def get_names(number: int):
     names = []
 
@@ -168,6 +229,3 @@ def main():
 
     # Calculate the PC and the ROC
     generate_plots(names, scores, actives)
-
-if __name__ == "__main__":
-    main()
