@@ -39,9 +39,7 @@ def load_file(filename: str) -> pd.DataFrame:
     if filename.endswith((".xlsx", ".ods")):
         return pd.read_excel(filename)
     elif filename.endswith(".lst"):
-        return pd.read_csv(_read_lst("resultados_Gold_ChemPLP.lst"), sep=',')
+        return pd.read_csv(_read_lst(filename), sep=',')
 
               
     return pd.read_csv(filename, sep=None, engine='python')
-
-print(load_file("resultados_Gold_ChemPLP.lst"))

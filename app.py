@@ -34,24 +34,31 @@ st.markdown("""
 option = st.selectbox(
     'Selecione o programa',
     ('program 1', 'program 2', 'program 3'))
-
 # Create two columns layout
 col1, col2 = st.columns(2, gap='large')
 
 data = dict()
 
-# Column 1: Form to upload .csv file
+# Column 1: Form to upload ligands and decoys files separately
 with col1:
-    st.subheader("Upload a .csv or .lst file")
-    uploaded_file = st.file_uploader("Choose a .csv file", type=['csv', 'lst'])
+    st.subheader("Upload Ligands and Decoys")
+    ligands_file = st.file_uploader("Choose a .csv or .lst file for ligands", type=['csv', 'lst'])
+    decoys_file = st.file_uploader("Choose a .csv or .lst file for decoys", type=['csv', 'lst'])
 
-    # Check if file is uploaded
-    if uploaded_file is not None:
-        df = load_file(uploaded_file.name)
-        st.success("File uploaded successfully.")
+    # Check if both files are uploaded
+    if ligands_file and decoys_file:
+        ligands_df = load_file(ligands_file.name)
+        ligands_df.assign(activity=1)
+        decoys_df = load_file(decoys_file.name)
+        decoys_df.assign(activity=0)
+        
+        st.success("Files uploaded successfully.")
 
-        # Preprocess the data
-        names, scores, actives = preprocess('mpro2.csv')
+        # Combine ligands and decoys data into a single dataframe
+        df = pd.concat([ligands_df, decoys_df], ignore_index=True)
+
+        # Preprocess the combined data
+        names, scores, actives = preprocess(df)
 
         # Calculate the PC and the ROC
         pc, roc = generate_data(names, scores, actives)
@@ -59,22 +66,15 @@ with col1:
         data['pc'] = pc
         data['roc'] = roc
 
-        # Display the data
+        # Display the combined data
         st.subheader("Data Preview")
         st.dataframe(df)
 
-
-
-
-# Column 2: Graphs
+# Column 2: Graphs (you can keep the plotting code as it is, but use data['pc'] and data['roc'])
 with col2:
-    st.subheader("Gráficos")
-
-
-    st.subheader("Predictiveness Curve")
     # Plot Predictiveness Curve
+    st.subheader("Predictiveness Curve")
     fig_pc = go.Figure()
-
     if data:
         for i, (x, y) in enumerate(zip(data['pc']['x'], data['pc']['y'])):
             fig_pc.add_trace(go.Scatter(x=x, y=y, mode='lines', name=f"Program {i} Predictiveness Curve"))
@@ -89,9 +89,8 @@ with col2:
     )
     st.plotly_chart(fig_pc)
 
-
-    st.subheader("ROC (Receiver Operating Characteristic))")
     # Plot ROC curve
+    st.subheader("ROC (Receiver Operating Characteristic)")
     fig_roc = go.Figure()
     if data:
         for i, (x, y) in enumerate(zip(data['roc']['x'], data['roc']['y'])):
@@ -105,12 +104,4 @@ with col2:
         height=700,
         width=1000
     )
-
     st.plotly_chart(fig_roc)
-    # Customize layout
-
-
-
-
-    # Display the figure
-    

@@ -1,0 +1,8 @@
+# all data files
+*.csv
+*.ipynb_checkpoints
+*.lst
+*.pdbqt
+
+# cache
+__pycache__
