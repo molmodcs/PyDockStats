@@ -40,6 +40,7 @@ def read(file: str):
 
 def fit_predict(x, y):        
     x = x.reshape(-1, 1)
+    print(y)
     clf = model.fit(x, y)
     predictions = clf.predict_proba(x)[:, 1]
 
@@ -191,8 +192,7 @@ def get_names(number: int):
 
     return names
 
-def preprocess(filename: str):
-        df = read(filename)
+def preprocess(df: pd.DataFrame):
         df = df.sample(frac=1).reset_index(drop=True)
         df = df.dropna(axis=1, how='all')
 
