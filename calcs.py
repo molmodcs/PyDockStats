@@ -7,8 +7,8 @@ def optimal_threshold(fpr, tpr, thresholds):
     return selected_t
 
 def calculate_hits(y_true_sorted, idx_selected_t, activity):
+    activity_topx = np.array(y_true_sorted[int(idx_selected_t):])
 
-    activity_topx = np.array(y_true_sorted[idx_selected_t:])
 
     hits_x = np.squeeze(np.where(activity_topx == 1)).size
     hits_t = np.squeeze(np.where(np.array(activity) == 1)).size
