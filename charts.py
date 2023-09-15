@@ -33,18 +33,18 @@ def generate_charts():
         for program_name in st.session_state.programs:
             pc_data, roc_data = _generate_curves(program_name)
             with pc_container:
-                plot_curve(fig_pc, program_name, pc_data, "Predictiveness Curve", "0")
+                plot_curve(fig_pc, program_name, pc_data, "Predictiveness Curve")
 
             with roc_container:
-                plot_curve(fig_roc, program_name, roc_data, "ROC", "0")
+                plot_curve(fig_roc, program_name, roc_data, "ROC")
                 
     else:
         pc_data, roc_data = _generate_curves(option)
         with pc_container:
-            plot_curve(fig_pc, option, pc_data, "Predictiveness Curve", "0")
+            plot_curve(fig_pc, option, pc_data, "Predictiveness Curve")
 
         with roc_container:
-            plot_curve(fig_roc, option, roc_data, "ROC", "0")
+            plot_curve(fig_roc, option, roc_data, "ROC")
         
     pc_container.plotly_chart(fig_pc)
     roc_container.plotly_chart(fig_roc)

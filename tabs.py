@@ -11,7 +11,7 @@ def input_programs(max=15):
                                      max_chars=30, value="")
         add_program = st.button("Add program", help="Add a new program tab", 
                                 type='secondary', disabled=len(st.session_state.programs) > max)
-        if add_program and name_program not in st.session_state.programs:
+        if (add_program or name_program) and name_program not in st.session_state.programs:
             if name_program:
                 st.session_state.programs.append(name_program)
             else:
@@ -51,6 +51,10 @@ def _program_tab_content(program_name):
         # remove the program from session state
         st.session_state.programs.remove(program_name)
         del remove_program
+        try:
+            del st.session_state.data[program_name] 
+        except KeyError:
+            pass
         st.experimental_rerun()
 
 def generate_tabs():

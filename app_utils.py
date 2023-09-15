@@ -47,9 +47,15 @@ def display_data_preview(df):
     st.dataframe(df)
 
 # Function to plot curves
-def plot_curve(fig, program_name, curve_data, curve_type, curve_name):
+def plot_curve(fig, program_name, curve_data, curve_name):
     x, y = curve_data['x'], curve_data['y']
-    fig.add_trace(go.Scatter(x=x, y=y, mode='lines', name=f"{curve_name} {program_name} {curve_type}", line=dict(width=3), showlegend=True))
+    fig.add_trace(
+        go.Scatter(
+                  x=x, y=y, mode='lines', 
+                  name=f"{program_name} {curve_name}", 
+                  line=dict(width=3), showlegend=True
+        )
+    )
 
 # Function to save Plotly figures as images
 def save_plotly_figures_as_images(figures):
