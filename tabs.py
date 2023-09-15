@@ -33,9 +33,9 @@ def _program_tab_content(program_name):
     ligands_file, decoys_file= utils.upload_files(program_name)
 
     if ligands_file and decoys_file:
-        ligands_df = load_file(ligands_file.name)
+        ligands_df = load_file(ligands_file)
         ligands_df['activity'] = 1
-        decoys_df = load_file(decoys_file.name)
+        decoys_df = load_file(decoys_file)
         decoys_df['activity'] = 0
         
         # Combine ligands and decoys data into a single dataframe

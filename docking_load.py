@@ -35,11 +35,12 @@ def _read_lst(lst_file: str):
     # The file will be automatically closed after the 'with' block
 
 
-def load_file(filename: str) -> pd.DataFrame:
+def load_file(file) -> pd.DataFrame:
+    filename = file.name
     if filename.endswith((".xlsx", ".ods")):
-        return pd.read_excel(filename)
+        return pd.read_excel(file)
     elif filename.endswith(".lst"):
-        return pd.read_csv(_read_lst(filename), sep=',')
+        return pd.read_csv(_read_lst(file), sep=',')
 
               
-    return pd.read_csv(filename, sep=None, engine='python')
+    return pd.read_csv(file, sep=None, engine='python')
