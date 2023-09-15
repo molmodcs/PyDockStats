@@ -3,6 +3,11 @@ import app_utils as utils
 from introduction import intro, helper
 from tabs import input_programs, generate_tabs
 from charts import generate_charts
+import sys
+import path
+
+dir = path.Path(__file__).abspath()
+sys.append.path(dir.parent.parent)
 
 # Set page width
 utils.set_max_width(70)
