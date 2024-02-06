@@ -20,11 +20,11 @@ import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from sklearn.metrics import auc, roc_curve
 from sklearn.linear_model import LogisticRegression
-
+import scienceplots
 
 NAME = "PyDockStats"
 FORMULA = "activity ~ scores"
-plt.style.use("fast")
+plt.style.use("science")
 formats = {"csv": pd.read_csv, "excel": pd.read_excel}
 
 
