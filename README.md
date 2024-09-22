@@ -1,4 +1,7 @@
 # About PyDockStats
+<p align="center">
+  <img src="PDS.png" alt="PyDockStats" style="max-width:0.5rem;max-height:0.5rem;"/>
+</p>
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/molmodcs/roc-auc-pc/blob/main/LICENSE)
 
