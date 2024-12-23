@@ -130,6 +130,15 @@ Example:
 python pydockstats.py -f input_data.csv -p gold,vina,dockthor -o out.png
 ```
 
+## Result Plots
+
+The results of the analysis, including ROC and Predictiveness Curve plots, will be saved as image files in the specified output directory. Example of synthetic plots are displayed below:
+
+<p align="center">
+  <img src="images/pc.png" alt="ROC Curve" width="49%">
+  <img src="images/roc.png" alt="Predictiveness Curve" width="49%">
+</p>
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct and the process for submitting pull requests.
