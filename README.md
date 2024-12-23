@@ -75,11 +75,11 @@ The following libraries are required:
    ```bash
    conda create --name <environment_name> python=<python_version>
    ```
-   Replace `<environment_name>` with your desired name for the environment, and `<python_version>` with the required Python version (e.g., `3.8`).
+   Replace `<environment_name>` with your desired name for the environment. A suggestion could be PyDockStats, and `<python_version>` with the required Python version (e.g., `3.8`).
 
 3. **Activate the Environment**  
    ```bash
-   conda activate <environment_name>
+   conda activate PyDockStats
    ```
 
 4. **Install Dependencies**  
@@ -112,7 +112,7 @@ The following libraries are required:
 
 ## Usage
 
-Run the script via the command line:
+Run the script via the command line where a data_file should follow the example above in a CSV format. 
 
 ```bash
 python pydockstats.py -f data_file
@@ -129,6 +129,7 @@ Example:
 ```bash
 python pydockstats.py -f input_data.csv -p gold,vina,dockthor -o out.png
 ```
+where *gold, vina and dockthor* are related to the molecular docking programs used. Please this sequence must be the same to the input data_file.
 
 ## Result Plots
 
