@@ -23,7 +23,7 @@ import scienceplots
 
 NAME = "PyDockStats"
 FORMULA = "activity ~ scores"
-plt.style.use("science")
+plt.style.use(["science", "no-latex"])
 formats = {"csv": pd.read_csv, "excel": pd.read_excel}
 
 
