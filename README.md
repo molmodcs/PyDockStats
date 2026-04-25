@@ -15,21 +15,59 @@ This tool is highly valuable for verifying the performance of Virtual Screening 
 **The web version of PyDockStats:**
 https://pydockstats.streamlit.app/
 
-## Installation
+## Recommended First Step: Isolated Environment (Optional)
 
-For regular use, install directly from GitHub with pip:
+This step is optional, but it is highly recommended.
+
+Using an isolated environment helps avoid conflicts with other Python packages on your machine and keeps your system clean.
+
+### Option A: Conda
+
+1. Create an environment:
 
 ```bash
-pip install git+https://github.com/molmodcs/PyDockStats@main
+conda create --name pydockstats-env python=3.12
 ```
 
-After installation, you can run the command `pydockstats` directly (without `python -m`).
+2. Activate it:
 
-Python dependencies are installed automatically by pip.
+```bash
+conda activate pydockstats-env
+```
 
-### Optional: isolated environment
+### Option B: venv
 
-If you prefer to keep PyDockStats in a dedicated environment, you can use either `conda` or `venv` before the install command above.
+1. Create an environment:
+
+```bash
+python -m venv .venv
+```
+
+2. Activate it:
+
+Linux/MacOS:
+
+```bash
+source .venv/bin/activate
+```
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+## Installation
+
+Install directly from GitHub with pip:
+
+```bash
+pip install git+https://github.com/molmodcs/PyDockStats
+```
+
+After installation, run `pydockstats` directly (without `python -m`).
+
+Dependencies are installed automatically by pip in your active environment.
 
 ## Usage
 
@@ -134,7 +172,7 @@ cd PyDockStats
 - Using Conda:
 
 ```bash
-conda create --name PyDockStats python=3.12
+conda create --name PyDockStats python=3.10
 conda activate PyDockStats
 ```
 
