@@ -5,10 +5,14 @@ Example:
 id_program1 | scores_program1 | activity_program1 | id_program2 | scores_program2 | activity_program2
 
 
-The code runs at the command line:
+The code runs at the command line with the installed script:
 
-python pydockstats.py -f <input file> -p <names of the Docking programs described in your file> -o  <image name for the output file (ex: "out.png")>
+pydockstats -f <input file> -p <names of the Docking programs described in your file> -o <image name for the output file (ex: "out.png")> -m <model type>
+
+Alternative module execution:
+
+python -m PyDockStats -f <input file> -p <names of the Docking programs described in your file> -o <image name for the output file (ex: "out.png")> -m <model type>
 
 For example:
 
-> python pydockstats.py -f input_data.csv -p gold,vina,dockthor -o plt_out.png
+> pydockstats -f input_data.csv -p gold,vina,dockthor -o plt_out.png -m logistic_regression
