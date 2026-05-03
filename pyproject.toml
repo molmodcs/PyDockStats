@@ -14,12 +14,12 @@ authors = [
 	{ name = "Luciano T. Costa" }
 ]
 dependencies = [
-	"matplotlib==3.10.9",
-	"numpy==2.4.4",
-	"pandas==3.0.2",
-	"scikit-learn==1.8.0",
-	"scienceplots==2.2.1",
-	"typer==0.25.0"
+	"matplotlib>=3.10.9",
+	"numpy>=2.2.0",
+	"pandas>=2.3.3",
+	"scikit-learn>=1.7.2",
+	"scienceplots>=2.2.1",
+	"typer>=0.25.0"
 ]
 
 [project.scripts]
